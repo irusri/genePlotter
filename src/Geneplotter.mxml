@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" preloader="preload.CustomPreloader"  xmlns:preload="preload.*"
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955"  creationComplete="geneplotter_init();"  minHeight="600" xmlns:local="*" xmlns:panzoom="org.rockholla.controls.panzoom.*" xmlns:components="components.*">
+	<fx:Declarations>
+		<mx:HTTPService id="serve_getConfigData" 
+						resultFormat="text" 
+						url="chromosome.json"
+						result="handle_config_files(event)" />
+		<mx:HTTPService id="serve_getTranscriptData"  
+						useProxy="false"           
+						method="GET"
+						showBusyCursor="true" 
+						result="transcriptDataResult(event)"
+						fault="transcriptDataResultFault(event)"
+						resultFormat="text" /> 
+		<mx:HTTPService id="serve_getGridTranscriptData"  
+						useProxy="false"          
+						method="GET"
+						showBusyCursor="true" 
+						result="transcriptgridDataResult(event)"
+						fault="transcriptDataResultFault(event)"
+						resultFormat="text" /> 	
+		<mx:HTTPService id="serve_getTranscriptDataPDf"  
+						useProxy="false"          
+						method="GET"
+						showBusyCursor="true" 
+						result="genelinesforPdf(event)"
+						fault="transcriptDataResultFault(event)"
+						resultFormat="text" /> 	 
+		
+			<mx:WipeRight id="wipeOut" duration="500"/>
+			<mx:WipeLeft id="wipeIn" duration="500"/>
+		
+		<mx:Parallel id="fastacustomMove" target="{exportlistcomp}" >
+			<mx:Move duration="1000" xTo="{(this.parent.width  - exportlistcomp.width)}" yTo="{(this.parent.height  - exportlistcomp.height)}" />
+			<mx:WipeDown duration="1000" />
+		</mx:Parallel>
+		
+		 
+	</fx:Declarations>
+<fx:Style source="geneplotter.css"/>
+
+	<fx:Script source="ChromosomeMain.as"></fx:Script>
+	
+	<panzoom:PanZoomComponent id="panzoom" backgroundColor="0x6C9270"                              
+							  width="100%" height="100%"  
+							  scaleMin="{MIN_ZOOM}" scaleMax="{MAX_ZOOM}" 
+							  childPreventsPan="false"
+							  zoomToCursor="true"
+							  zoomSpeed="0.6" 
+							
+							 
+							  initialZoomLevel="1"
+							  panScrollBarsVisible="false"
+							  zoom="this._onZoom()" >
+		
+		<panzoom:PanZoomContent id="dd"   width="1600" height="1200" backgroundColor="0xFFFFFF">
+		</panzoom:PanZoomContent>
+		
+	</panzoom:PanZoomComponent>
+	<mx:Box cornerRadius="5"  paddingLeft="1" paddingRight="2"  backgroundColor="#cccccc" backgroundAlpha="0.3"  x="5" y="30">
+		
+	
+	<mx:VSlider id="slider" 
+				  height="150"
+				minimum="{MIN_ZOOM * 100}" maximum="{MAX_ZOOM * 100}" 
+				value="100"  toolTip="{slider.value*100}"
+				labels="{['10%', 'Zoom', '1000%']}" 
+				liveDragging="true"  
+				showTrackHighlight="true"
+				styleName="plusSlider"
+	  			
+				change="this._onSliderChanged()" />
+	</mx:Box>
+	<mx:Canvas  visible="false" x="20"  y="20" width="100%" id="p1"/>
+	<mx:Canvas showEffect="{wipeIn}" hideEffect="{wipeOut}" id="maintoolbox" width="340" height="440" horizontalScrollPolicy="off" verticalScrollPolicy="off"  backgroundColor="#cccccc" backgroundAlpha="0.3" cornerRadius="5" right="0">
+		 
+		<mx:Button  toolTip="Hide controls" id="closeButton" right="4" top="8" buttonMode="true" click="{maintoolbox.visible=false;}"  styleName="closeButton" useHandCursor="true"  />
+ 
+	<s:Button enabled="{inputTranscripttxt.text!=''?true:false}" right="12" y="173" label="Submit" click="submitTranscript_clickHandler()" id="submitTranscript"/>
+	<s:Button enabled="{p2!=null?true:false}"  right="173"  y="406" label="PDF"  click="{drawChromosomeChartPDF()}"/>
+	<s:Button enabled="{p2!=null?true:false}"  right="97"  y="406" label="PNG" click="{takeSnapshot();}"/>
+	<s:Button enabled="{p2!=null?true:false}"  right="21"  y="406" label="CSV" click="{handleExportClick();}"/>	
+	<s:Label right="170" y="361" text="Font Color :" fontWeight="bold"/>
+	<s:TextArea  change="removeeliments();"  id="inputTranscripttxt" right="96" y="43"/>
+	<mx:ColorPicker  enabled="{p2!=null?true:false}" selectedColor="0x9BC4E2"  change="changechromosomeColor();;" id="chromosomepick" right="137" y="218"/>
+	<s:HSlider enabled="{p2!=null?true:false}" right="55" y="266" id="alphaChromosome" stepSize="0.1" maximum="1" minimum="0.2"   value="0.3" change="changechromosomeAlpha();" height="15" width="100"/>
+	<!--removeeliments(); doubleClickZoomStep="1.5"submitTranscript_clickHandler();-->
+	<mx:ColorPicker  enabled="{p2!=null?true:false}" selectedColor="0xFF0000" change="changegeneColor();"  id="genecolorpick" right="133" y="309"/>
+	<mx:ColorPicker  enabled="{p2!=null?true:false}" selectedColor="0x000000" change="changenumberColor();"  id="numberpick" right="133" y="355"/>
+	<s:VSlider  enabled="{p2!=null?true:false}" right="100" y="926" id="alphaGene" visible="false" stepSize="0.1" maximum="1" minimum="0.2"  value="1" change="removeeliments();submitTranscript_clickHandler();" height="100" width="20"/>	
+	<s:Label  right="170" y="228" text="Chromosome Color :" fontWeight="bold"/>
+	<s:Label right="170" y="270" text="Chromosome Alpha :" fontWeight="bold"/>
+	<s:Label right="170" y="318" text="Gene Color :" fontWeight="bold"/>
+	<s:Label right="180" y="20" text="Transcript Names :" fontWeight="bold"/>
+	<mx:LinkButton right="60" id="demoData" click="demoData_clickHandler(event)" y="12" label="Demo Data" fontWeight="bold"/>
+		<s:Button enabled="{p2!=null?true:false}" id="tableButton" right="251"  y="406" label="Show Table" click="{gridbtnClick();}"/>	
+	</mx:Canvas>
+	<mx:Box backgroundColor="white" showEffect="{wipeIn}" hideEffect="{wipeOut}" visible="false" id="gridBox" width="50%" right="0" y="0">
+		<mx:DataGrid id="dg" width="100%" height="100%" rowCount="15" >
+		<mx:columns>
+			<mx:DataGridColumn dataField="tempvalue" headerText="Transcript Name"/>
+			<mx:DataGridColumn dataField="chromosome" headerText="Chromosome"/>
+			<mx:DataGridColumn dataField="transcriptstart" headerText="Transcript Start"/>			
+			<mx:DataGridColumn dataField="genelength" itemRenderer="CustomGridField" headerText="Chromosome length"/>	
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:Box> 
+	
+		<s:Label bottom="5" left="10"  fontSize="15" fontFamily="gillsans" fontWeight="bold" text="1 pixel = 80000 base pairs"/>
+
+	
+	<components:exportresultspopup   y="{this.mouseY-exportlistcomp.height/3}"   x="{this.mouseX-exportlistcomp.width/2}" id="exportlistcomp" visible="false" />
+	
+	
+	<mx:AdvancedDataGrid height="200" width="200" visible="false" dataProvider="{dgArrayCol}" id="exportDG" >
+		<mx:groupedColumns>
+			<mx:AdvancedDataGridColumn  dataField="id" id="poptrid"   headerText="ID"/>
+		</mx:groupedColumns>
+	</mx:AdvancedDataGrid>
+	
+	<mx:Image toolTip="Show controls" top="2" right="0" width="22" height="22" buttonMode="true" source="@Embed(source='assets/arrow-show.png')"  id="showbtn" visible="{!maintoolbox.visible}" click="{maintoolbox.visible=true;}" />
+
+	
+</s:Application>

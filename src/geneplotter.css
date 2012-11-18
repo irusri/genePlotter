@@ -1,0 +1,120 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+@font-face { 
+	src: url("verdana.ttf"); 
+	fontFamily: gpFontFamily; 
+	embedAsCFF: false; 
+	color:#00ff00;
+}
+.redBox
+{
+	backgroundColor: #ff0000;
+}
+.yellowBox
+{
+	backgroundColor: #ffff00;
+	
+}
+@font-face { 
+	src: url("GillSans_Regular.ttf"); 
+	fontFamily: gillsans; 
+	embedAsCFF: false; 
+	color:#000000;
+}
+.closeButton {
+	icon: Embed(source="/assets/error_small.png");
+	skin: ClassReference(null); 
+}
+mx|ToolTip {
+	fontFamily: gillsans;
+	font-size:13;
+	font-thickness:-105;
+	font-sharpness:-400;
+	font-anti-alias-type:advanced;
+	background-color: #6C9270;
+	color:#ffffff;	
+}
+.linkcolors{
+color:#0000FF;
+text-decoration:underline;
+text-roll-over-color:#FFFFFF;
+text-selected-color:#FFFFFF;
+roll-over-color:#FFFFFF;
+
+}
+.ccheckBox {
+	font-size:15;
+	fontFamily: gillsans;
+	highlightAlphas: 1, 1;
+	fillAlphas: 1, 1, 1, 1;
+	fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+	borderColor: #ffffff;
+	iconColor: #6C9270;
+	disabledIconColor: #ffffff;
+	color: #ffffff;
+	textSelectedColor: #ffffff;
+	textRollOverColor: #ffffff;
+	themeColor: #ffffff;
+}
+/*mx|CursorManager
+{
+busyCursor: ClassReference("mx.skins.halo.BusyCursor");
+busyCursorBackground: Embed(source="preload/welcomes.png");
+}*/
+
+
+mx|TitleWindow{
+	
+	borderAlpha: 1;
+	borderColor: haloSilver;
+	backgroundColor: haloSilver;
+	cornerRadius: 0;
+	
+}
+
+.titleerrorstyle{
+	
+	color:red;
+	font-size:14px;
+	font-thickness:-105;
+	font-sharpness:-400;
+	font-anti-alias-type:advanced;
+}
+
+
+
+.titleexportstyle{
+	
+	color:#000000;
+	font-size:14px;
+	font-thickness:-105;
+	font-sharpness:-400;
+	font-anti-alias-type:advanced;
+}
+
+.vboxstyle{
+	color:#FFFFFF;
+	font-weight:bold;
+	background-color:#6C9270;
+	font-family:gillsans;
+	font-size:5px;
+	
+	
+}
+
+.plusSlider{
+
+
+	
+	track-margin:-20;
+	font-family:gillsans;
+	color:#000000;
+	font-size:12px;
+	font-thickness:-105;
+	font-sharpness:-400;
+	font-anti-alias-type:advanced;
+}
+
+

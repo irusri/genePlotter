@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" showCloseButton="true" titleIcon="@Embed(source='assets/done.png')" fontFamily="gillsans" titleStyleName="titleexportstyle"
+				close="{this.visible=false;}" title="Export List" dropShadowVisible="true" cornerRadius="5" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" modalTransparencyColor="#93d39a" modalTransparency="0.2" modalTransparencyDuration="5"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="340" chromeColor="#ccffcc" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<fx:Declarations>
+		<mx:Sequence id="movePauseMove">
+		<mx:Glow id="glowImage" duration="100"
+				 alphaFrom="0" alphaTo="1"
+				 blurXFrom="0.0" blurXTo="30.0" 
+				 blurYFrom="0.0" blurYTo="30.0"  strength="1"
+				 color="0xCC0000" target="{popTxt}"/>
+		
+		<mx:Glow id="unglowImage" duration="800"  
+				 alphaFrom="1" alphaTo="0"
+				 blurXFrom="30.0" blurXTo="0.0"
+				 blurYFrom="30.0" blurYTo="0.0"  strength="1"
+				 color="0xCC0000" target="{popTxt}"/>
+			</mx:Sequence>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations> 
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			private var tmptxt:String=""
+			
+			
+			private function infoFunction(id:String):void{
+			//Alert.show(id.toString());
+			switch(id)
+			{
+				case "csvbtn":
+				{
+					
+					infoTxt.text="Click to download  General Feature Format(GFF3) file locally.";
+					tmptxt="to GFF3"
+					break;
+				} 
+				case "tsvbtn":
+				{
+					
+					infoTxt.text="Click to download Tab-separated values (TSV) file locally.";
+					tmptxt="to TSV"
+					break;
+				} 
+					
+				case "galaxybtn":
+				{
+					infoTxt.text="Click to export tab delimited file into existing PopGenIE Galaxy history [Open window in page itself].";
+					tmptxt="to Popgenie Galaxy"
+					break;
+				}
+				case "phytozomebtn":
+				{
+					infoTxt.text="Click to upload custom track into Phytozome GBrowse [Open window in new blank page].";
+					tmptxt="to  Phytozome GBrowse"
+					break;
+				}
+				case "gbrowsebtn":
+				{
+					infoTxt.text="Click to upload custom track into PopGenIE GBrowse [Open window in new blank page].";
+					tmptxt="to PopGenIE GBrowse"
+					break;
+				}
+					
+				case "agrigobtn":
+				{
+					infoTxt.text="Export results list to AgriGO Singular Enrichment Analysis tool(SEA).You need more than 10 gene to match with GO [Open window in new blank page].";
+					tmptxt="to AgriGO Singular Enrichment Analysis tool"
+					break;
+				}
+					
+				default :
+				{
+					tmptxt="";
+					infoTxt.text="Results can be exported to following formats or destinations.Please move the mouse over the icons to see more details.";
+					break;
+				}
+					
+			}
+			}
+			
+			private function defaultinfofunct():void{
+				infoTxt.text="Results can be exported to following formats or destinations.Please move the mouse over the icons to see more details.";
+				tmptxt="";
+			} 
+			
+		]]>
+	</fx:Script>
+	<mx:VBox width="100%" height="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off" verticalAlign="middle" >
+		<mx:TextArea  showEffect="{movePauseMove}"  x="0"  paddingRight="14" horizontalScrollPolicy="off"   paddingLeft="0" id="popTxt" height="200"  paddingTop="5" fontSize="13"   contentBackgroundColor="haloSilver" borderVisible="false" fontFamily="gillsans"  width="380"   editable="false" />
+		
+		<mx:TextArea paddingTop="5" height="100%" fontSize="13" id="infoTxt"  contentBackgroundColor="haloSilver" borderVisible="false" fontFamily="gillsans"  width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off" editable="false" text="Results can be exported to following formats or destinations.Please move the mouse over the icons to see more details."/>
+		
+		<mx:HBox height="40" width="100%">
+			<mx:Image   id="csvbtn" mouseOver="infoFunction(csvbtn.id);" buttonMode="true" source="@Embed(source='assets/gff3.png')"/>
+			<mx:Image  mouseOut="defaultinfofunct();" id="tsvbtn" mouseOver="infoFunction(tsvbtn.id);" buttonMode="true" source="@Embed(source='assets/tsvico.png')"/>
+			
+			<mx:Image mouseOut="defaultinfofunct();" id="galaxybtn" mouseOver="infoFunction(galaxybtn.id);" buttonMode="true" source="@Embed(source='assets/galaxy.png')"/>
+			<mx:Image    mouseOut="defaultinfofunct();" id="agrigobtn" mouseOver="infoFunction(agrigobtn.id);" buttonMode="true" source="@Embed(source='assets/agriGO_logo.png')"/>
+			 
+			
+			
+			<mx:Image  mouseOut="defaultinfofunct();" id="phytozomebtn" mouseOver="infoFunction(phytozomebtn.id);" buttonMode="true" source="@Embed(source='assets/phytozome.jpg')"/>
+			<mx:Image visible="false"  mouseOut="defaultinfofunct();" id="gbrowsebtn" mouseOver="infoFunction(gbrowsebtn.id);" buttonMode="true" source="@Embed(source='assets/gbrowse.jpg')"/>
+		</mx:HBox>
+		
+
+		
+		<!--	<mx:Spacer width="100%" height="1" />
+		<mx:TextArea   contentBackgroundAlpha="0.3" borderVisible="false"  fontFamily="gillsans"  width="100%" height="100%" color="#000"  htmlText="{(this.parentDocument as Newbulktool).cantfind}"/>
+-->	</mx:VBox>
+</mx:TitleWindow>
+ 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="4bc4a3e6-43d9-423d-b73c-1e0f587e5b04" projectUUID="4bc4a3e6-43d9-423d-b73c-1e0f587e5b04" sdkVersion="4.1.0" uuid="de292f31-5b79-43c1-8f9f-4614e86960e8" version="4">
+  <projects/>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="de292f31-5b79-43c1-8f9f-4614e86960e8"/>
+    <linked location="C:/Users/chma/Desktop/finalzip/genePlotter/libs" path="/libs" position="1" uuid="de292f31-5b79-43c1-8f9f-4614e86960e8"/>
+  </swc>
+  <misc/>
+  <theme/>
+</fxpProperties>

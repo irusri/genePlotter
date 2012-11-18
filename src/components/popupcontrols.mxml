@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"     showEffect="{scaleup}"
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"  xmlns:callout="com.aaronhardy.callout.*">
+	<fx:Declarations>
+		<s:Scale  scaleXFrom="0" scaleXTo="1" scaleYFrom="0" scaleYTo="1" duration="200" id="scaleup"/>
+		<s:Scale scaleXFrom="1" scaleXTo="0" scaleYFrom="1" scaleYTo="0" id="scaledown" duration="200"/>
+		<s:Move  id="scaledown2" duration="500"  />
+
+	<!--	<mx:WipeLeft id="wipeOut" duration="1000"/>
+		<mx:WipeRight id="wipeIn" duration="1000"/>-->
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import events.RemoveFromListTextEvent;
+			import events.SendToListTextEvent;
+			
+			import mx.controls.Alert;
+			[Bindable]
+			public var chromosomestr:String="";
+			[Bindable]
+			public var poptrstr:String="";
+			[Bindable]
+			public var stopstr:String="";
+			[Bindable]
+			public var startstr:String="";			
+			
+
+			protected function poptrlink_clickHandler(event:MouseEvent):void
+			{
+				var URL:String = "http://popgenie.org/transcript/"+poptrstr;
+				navigateToURL(new URLRequest(URL), "_blank");
+			
+			
+			}
+			protected function sendtobt():void
+			{
+				if(sendChk.selected){
+					dispatchEvent(new SendToListTextEvent(SendToListTextEvent.sendtoMainTextInput,true,false,poptrstr))
+		/* 			if((this.parentApplication as Geneplotter).exportlistcomp.x<this.parentApplication.width-450){
+						scaledown.duration=1500;
+					}else{
+						scaledown.duration=500;
+					}
+					
+					
+					var i:int;
+					var str:String = chromosomestr;
+					var pattern:RegExp = /scaffold_/gi;
+					trace(str.replace(pattern, ""));
+					i=parseInt(str.replace(pattern, ""));
+					
+					
+				scaledown.xFrom=25*i+24;
+				scaledown.xTo=(this.parentApplication as Geneplotter).width-(this.parentApplication as Geneplotter).exportlistcomp.width/2;	
+				
+				scaledown.yFrom==Math.round(parseInt(startstr)/80000)+15
+				scaledown.yTo=(this.parentApplication as Geneplotter).height-(this.parentApplication as Geneplotter).exportlistcomp.height/2;	
+				
+				scaledown.play();
+				scaledown.stop() */;
+				//Alert.show(this.parentApplication.mouseX.toString());
+				this.visible=false;
+			//	this.y=-this.parentApplication.height
+			//		this.x=-this.parentApplication.width	
+				}else{
+					dispatchEvent(new RemoveFromListTextEvent(RemoveFromListTextEvent.removeTextInput,true,false,poptrstr))	
+				}
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Button skinClass="components.arrowskin" buttonMode="true" left="-8" top="5" />
+	<mx:VBox styleName="vboxstyle"  width="100%" cornerRadius="3" paddingBottom="6" paddingTop="1" paddingLeft="2" paddingRight="2" verticalGap="0" horizontalGap="0">
+		<mx:CheckBox change="sendtobt();" id="sendChk" styleName="ccheckBox"  paddingLeft="3" fontFamily="gillsans" paddingTop="2" paddingBottom="-2" scaleX="0.5" scaleY="0.5"  fontSize="11" label="Add to export list"  />
+		
+	<mx:Label width="100%" text="{'Chromosome: '+chromosomestr}"   paddingTop="2" paddingBottom="-2"/>
+		<mx:HBox horizontalGap="-4"  paddingTop="0" paddingBottom="0">
+			<mx:Label width="30" paddingTop="-2" paddingBottom="-2" text="Transcript:"/>	
+			<mx:Label  styleName="linkcolors"   id="poptrlink" click="poptrlink_clickHandler(event)" text="{poptrstr}"  paddingTop="-2" paddingBottom="-2"/>
+		</mx:HBox>
+
+		
+	<mx:Label  text="{'Start: '+startstr}" paddingTop="-2" paddingBottom="-2"/>
+	<mx:Label  text="{'Stop: '+stopstr}" paddingTop="-2" paddingBottom="-1"/>
+			
+	</mx:VBox>
+	<s:Button id="closebtn"  skinClass="components.closebutton"  x="78" y="1"  />
+
+</s:Group>
